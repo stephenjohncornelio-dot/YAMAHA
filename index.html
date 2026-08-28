@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yamaha Store — Inventory System</title>
+  <title>Store Inventory System</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
@@ -14,7 +14,6 @@
       align-items: center;
       justify-content: center;
       margin: 0;
-      font-family: Arial, sans-serif;
     }
     .login-card {
       background: white;
@@ -25,119 +24,60 @@
       max-width: 420px;
       margin: 1rem;
     }
-    .yamaha-logo {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    .yamaha-logo h1 {
-      color: #0047AB;
-      font-weight: bold;
-      font-size: 1.8rem;
-      margin: 0;
-    }
-    .yamaha-logo p {
-      color: #666;
-      margin: 0.3rem 0 0 0;
-    }
-    .btn-yamaha {
+    .btn-primary-custom {
       background-color: #E60012;
       color: white;
       font-weight: bold;
       border: none;
       padding: 0.6rem;
-      font-size: 1.05rem;
     }
-    .btn-yamaha:hover {
-      background-color: #cc0000;
-      color: white;
-    }
-    .form-control:focus {
-      border-color: #0047AB;
-      box-shadow: 0 0 0 0.2rem rgba(0,71,171,0.25);
-    }
-    .error-box {
-      display: none;
-      margin-top: 1rem;
-      padding: 0.75rem;
-      background: #ffe5e5;
-      border-radius: 6px;
-      color: #b30000;
-      text-align: center;
-    }
-    @media (max-width: 480px) {
-      .login-card { padding: 1.5rem; }
-      .yamaha-logo h1 { font-size: 1.5rem; }
-    }
+    .btn-primary-custom:hover { background-color: #cc0000; color: white; }
+    .error-box { display: none; margin-top: 1rem; padding: 0.75rem; background: #ffe5e5; border-radius: 6px; color: #b30000; text-align: center; }
   </style>
 </head>
 <body>
-
   <div class="login-card">
-    <div class="yamaha-logo">
-      <h1>🏍️ YAMAHA STORE</h1>
-      <p>Inventory Management System</p>
-    </div>
-
+    <h2 class="text-center mb-4" style="color:#0047AB">🏍️ STORE INVENTORY</h2>
     <form id="loginForm">
       <div class="mb-3">
-        <label class="form-label fw-medium">Email Address</label>
-        <input type="email" id="email" class="form-control" placeholder="your.email@example.com" required autocomplete="email">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="email" class="form-control" required>
       </div>
       <div class="mb-4">
-        <label class="form-label fw-medium">Password</label>
-        <input type="password" id="password" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+        <label class="form-label">Password</label>
+        <input type="password" id="password" class="form-control" required>
       </div>
-
-      <button type="submit" class="btn btn-yamaha w-100">LOGIN</button>
-
+      <button type="submit" class="btn btn-primary-custom w-100">🔐 LOGIN</button>
       <div id="errorMsg" class="error-box"></div>
     </form>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // ==================================================
-    // 🔧 PASTE YOUR APPS SCRIPT WEB APP URL HERE
-    // ==================================================
+    // ========= PASTE YOUR WEB APP URL HERE =========
     const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxINiNMNXWtpljvtnTS7IrwyYpNF09F_HPVZilLS0SXickGeOiuQ2FJ66poriDVf8O_/exec";
 
-    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+    document.getElementById("loginForm").addEventListener("submit", async e => {
       e.preventDefault();
-      
       const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+      const pass = document.getElementById("password").value.trim();
       const errorBox = document.getElementById("errorMsg");
-
       errorBox.style.display = "none";
 
       try {
-        // ✅ Simple & secure GET request — matches your Apps Script code
-        const targetUrl = `${APPSCRIPT_URL}?page=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-
-        const response = await fetch(targetUrl);
-        const result = await response.json();
-
+        const res = await fetch(`${APPSCRIPT_URL}?email=${encodeURIComponent(email)}&password=${encodeURIComponent(pass)}`);
+        const result = await res.json();
+        
         if (result.success) {
-          // Save session & redirect to dashboard
-          localStorage.setItem("yamaha_sid", result.sid);
-          localStorage.setItem("yamaha_email", email);
-          // Go straight to dashboard with session ID
           window.location.href = `${APPSCRIPT_URL}?sid=${result.sid}&page=dashboard`;
         } else {
-          showError(result.message || "❌ Invalid email or password");
+          errorBox.textContent = result.message;
+          errorBox.style.display = "block";
         }
-
-      } catch (error) {
-        console.error("Login Error:", error);
-        showError("⚠️ Connection failed.<br>Check your Web App URL and re-deploy.");
+      } catch (err) {
+        errorBox.innerHTML = "⚠️ Connection error.<br>Check your URL and re-deploy.";
+        errorBox.style.display = "block";
       }
     });
-
-    function showError(message) {
-      const errorBox = document.getElementById("errorMsg");
-      errorBox.innerHTML = message;
-      errorBox.style.display = "block";
-    }
   </script>
 </body>
 </html>
