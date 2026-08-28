@@ -6,7 +6,6 @@
   <title>Store Inventory System</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
     body {
       background: linear-gradient(135deg, #0047AB 0%, #002E73 100%);
       min-height: 100vh;
@@ -14,70 +13,88 @@
       align-items: center;
       justify-content: center;
       margin: 0;
+      font-family: Arial, sans-serif;
     }
-    .login-card {
+    .welcome-card {
       background: white;
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      padding: 2.5rem;
+      padding: 3rem 2rem;
       width: 100%;
-      max-width: 420px;
+      max-width: 450px;
       margin: 1rem;
+      text-align: center;
     }
-    .btn-primary-custom {
+    .welcome-card h1 {
+      color: #0047AB;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .welcome-card p.subtitle {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    .btn-open {
       background-color: #E60012;
       color: white;
       font-weight: bold;
       border: none;
-      padding: 0.6rem;
+      padding: 0.7rem 2rem;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      width: 100%;
     }
-    .btn-primary-custom:hover { background-color: #cc0000; color: white; }
-    .error-box { display: none; margin-top: 1rem; padding: 0.75rem; background: #ffe5e5; border-radius: 6px; color: #b30000; text-align: center; }
+    .btn-open:hover {
+      background-color: #cc0000;
+      color: white;
+    }
+    .features-list {
+      text-align: left;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee;
+    }
+    .features-list h6 {
+      color: #0047AB;
+      font-weight: bold;
+    }
+    .features-list ul {
+      padding-left: 1.2rem;
+      margin-bottom: 0;
+      color: #444;
+      font-size: 0.9rem;
+    }
+    .features-list li {
+      margin-bottom: 0.3rem;
+    }
   </style>
 </head>
 <body>
-  <div class="login-card">
-    <h2 class="text-center mb-4" style="color:#0047AB">🏍️ STORE INVENTORY</h2>
-    <form id="loginForm">
-      <div class="mb-3">
-        <label class="form-label">Email Address</label>
-        <input type="email" id="email" class="form-control" required>
-      </div>
-      <div class="mb-4">
-        <label class="form-label">Password</label>
-        <input type="password" id="password" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary-custom w-100">🔐 LOGIN</button>
-      <div id="errorMsg" class="error-box"></div>
-    </form>
+
+  <div class="welcome-card">
+    <h1>🏍️ STORE INVENTORY</h1>
+    <p class="subtitle">Inventory Management System</p>
+
+    <!-- ==============================================
+          👇 REPLACE THIS URL WITH YOUR OWN
+          ============================================== -->
+    <a href="https://script.google.com/macros/s/AKfycbxINiNMNXWtpljvtnTS7IrwyYpNF09F_HPVZilLS0SXickGeOiuQ2FJ66poriDVf8O_/exec" class="btn btn-open" target="_blank">
+      📂 OPEN SYSTEM
+    </a>
+
+    <div class="features-list">
+      <h6>✅ 7 Features Available:</h6>
+      <ul>
+        <li>📊 Dashboard Overview</li>
+        <li>🏍️ Motorcycle Management</li>
+        <li>🏷️ Categories</li>
+        <li>🔄 Stock In / Sales</li>
+        <li>📋 Inventory List & Search</li>
+        <li>📈 Sales & Stock Reports</li>
+        <li>👤 User & System Info</li>
+      </ul>
+    </div>
   </div>
 
-  <script>
-    // ========= PASTE YOUR WEB APP URL HERE =========
-    const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxINiNMNXWtpljvtnTS7IrwyYpNF09F_HPVZilLS0SXickGeOiuQ2FJ66poriDVf8O_/exec";
-
-    document.getElementById("loginForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const pass = document.getElementById("password").value.trim();
-      const errorBox = document.getElementById("errorMsg");
-      errorBox.style.display = "none";
-
-      try {
-        const res = await fetch(`${APPSCRIPT_URL}?email=${encodeURIComponent(email)}&password=${encodeURIComponent(pass)}`);
-        const result = await res.json();
-        
-        if (result.success) {
-          window.location.href = `${APPSCRIPT_URL}?sid=${result.sid}&page=dashboard`;
-        } else {
-          errorBox.textContent = result.message;
-          errorBox.style.display = "block";
-        }
-      } catch (err) {
-        errorBox.innerHTML = "⚠️ Connection error.<br>Check your URL and re-deploy.";
-        errorBox.style.display = "block";
-      }
-    });
-  </script>
 </body>
 </html>
